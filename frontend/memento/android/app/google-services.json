@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1024007992697",
+    "project_id": "memento-eb438",
+    "storage_bucket": "memento-eb438.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024007992697:android:949da7f52dc0e81cd62ba8",
+        "android_client_info": {
+          "package_name": "com.example.memento"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOO749D5XmtZTevPgnmp3enceP7-BeZNg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
