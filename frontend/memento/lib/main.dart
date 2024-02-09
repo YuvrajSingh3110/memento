@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:memento/services/localDb/localDb.dart';
-import 'package:memento/views/auth/phoneNumber.dart';
+import 'package:memento/services/provider/provider.dart';
+import 'package:memento/views/auth/login.dart';
 import 'package:memento/widgets/bottomNavBar.dart';
+import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
@@ -57,18 +59,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Memento',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: ((context) => EventProvider()),
+      child: MaterialApp(
+          title: 'Memento',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            useMaterial3: true,
+          ),
+          home: isLogin
+              ? BottomNavBar(role: role)
+              : const Login(),
         ),
-        home: isLogin
-            ? BottomNavBar(role: role)
-            : const PhoneNumber(),
-        // : isLogin && role == 'Patient'
-        //     ? const QRGenerationScreen()
-        //     : const Login(),
-      );
+    );
   }
 }

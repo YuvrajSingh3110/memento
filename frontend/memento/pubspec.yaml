@@ -40,7 +40,24 @@ dependencies:
   cloud_firestore: any
   shared_preferences: any
   fluttertoast: any
-  flutter_otp_text_field: ^1.1.1
+  flutter_otp_text_field: any
+  google_nav_bar: any
+  flutter_phone_direct_caller: any
+  flutter_sms_android: any
+  url_launcher: any
+  provider: any
+  flutter_barcode_scanner: ^2.0.0
+  qr_flutter: ^4.0.0
+  google_maps_flutter: ^2.5.3
+  speech_to_text: any
+  flutter_tts: any
+  http: any
+  line_awesome_flutter: any
+  location: any
+  flutter_polyline_points: any
+  syncfusion_flutter_calendar: any
+  syncfusion_flutter_core: any
+  intl: any
 
 dev_dependencies:
   flutter_test:
