@@ -5,14 +5,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:memento/services/linkUsers.dart';
 
-class MapScreenParent extends StatefulWidget {
-  const MapScreenParent({super.key});
+class MapScreenPatient extends StatefulWidget {
+  const MapScreenPatient({super.key});
 
   @override
-  State<MapScreenParent> createState() => _MapScreenParentState();
+  State<MapScreenPatient> createState() => _MapScreenPatientState();
 }
 
-class _MapScreenParentState extends State<MapScreenParent> {
+class _MapScreenPatientState extends State<MapScreenPatient> {
   final mapsApiKey = "AIzaSyBAC_OF_lWBfFr_Zjs-mO0Kwyr4f_faiMU";
   late GoogleMapController mapController;
   String? user_id = FirebaseAuth.instance.currentUser!.uid;
@@ -112,8 +112,8 @@ class _MapScreenParentState extends State<MapScreenParent> {
     return Scaffold(
       body: GoogleMap(
         onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: patientLatLng[0],
+        initialCameraPosition: const CameraPosition(
+          target: LatLng(31.3310016, 75.5734925),
           zoom: 14,
         ),
         polylines: {
