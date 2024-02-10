@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfilePatient> {
 
   Future<void> _handleLogout() async {
     try {
-      //await LocalDb.clearUserData(); // Clears user data from SharedPreferences
+      await LocalDb.clearUserData(); // Clears user data from SharedPreferences
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login())); // Navigate to the login screen
     } catch (e) {
       print("Error during logout: $e");

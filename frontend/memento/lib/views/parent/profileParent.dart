@@ -71,7 +71,7 @@ class _ProfileScreenState extends State<ProfileParent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: height * 0.05),
+              // SizedBox(height: height * 0.05),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileParent> {
                                 LineAwesomeIcons.envelope,
                                 size: 16,
                               ),
-                              SizedBox(width: width * 0.05),
+                              SizedBox(width: width * 0.01),
                               Text(
                                 userEmail ?? "Loading..",
                                 style: const TextStyle(
@@ -125,11 +125,11 @@ class _ProfileScreenState extends State<ProfileParent> {
                               ),
                               Text(
                                 phoneNumber ?? "No phone number",
-                                style: const TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 16),
                               ),
                               Container(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
+                                    horizontal: width*0.03, vertical: height*0.005),
                                 decoration: BoxDecoration(
                                   color: Colors
                                       .grey[200], // Light gray background color
@@ -157,10 +157,10 @@ class _ProfileScreenState extends State<ProfileParent> {
 
 
 
-                  const SizedBox(
-                    height: 10,
-                    width: 40,
-                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  //   width: width*0.03,
+                  // ),
 
 
                   // avart image
