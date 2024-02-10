@@ -503,7 +503,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (user != null) {
       try {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        await FirebaseFirestore.instance.collection('patient').doc(user.uid).update({
           'name': nameController.text,
           'phone': phoneController.text,
         });

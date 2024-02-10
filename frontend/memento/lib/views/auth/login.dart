@@ -17,6 +17,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool _isObscure3 = true;
   bool visible = false;
+  bool isLoading = false;
   final _formkey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -26,7 +27,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -49,7 +50,7 @@ class _LoginState extends State<Login> {
                           "Login",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 40,
                           ),
                         ),
@@ -65,12 +66,14 @@ class _LoginState extends State<Login> {
                             enabled: true,
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 8.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
@@ -100,8 +103,8 @@ class _LoginState extends State<Login> {
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
                                 icon: Icon(_isObscure3
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
                                 onPressed: () {
                                   setState(() {
                                     _isObscure3 = !_isObscure3;
@@ -113,12 +116,14 @@ class _LoginState extends State<Login> {
                             enabled: true,
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 15.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
@@ -141,26 +146,56 @@ class _LoginState extends State<Login> {
                         const SizedBox(
                           height: 20,
                         ),
-                        MaterialButton(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          elevation: 5.0,
-                          height: 40,
-                          onPressed: () {
-                            setState(() {
-                              visible = true;
-                            });
-                            login(
-                                emailController.text, passwordController.text);
-                          },
-                          color: Colors.white,
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(
-                              fontSize: 20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            MaterialButton(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25.0))),
+                              height: 50,
+                              onPressed: () {
+                                setState(() {
+                                  visible = true;
+                                });
+                                login(
+                                    emailController.text, passwordController.text);
+                              },
+                              color: Colors.black,
+                              child: const Text(
+                                "Login",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.white
+                                ),
+                              ),
                             ),
-                          ),
+                            MaterialButton(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20.0),
+                                ),
+                              ),
+                              elevation: 5.0,
+                              height: 40,
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Signup(),
+                                  ),
+                                );
+                              },
+                              color: Colors.white,
+                              child: const Text(
+                                "Signup",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 25,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 10,
@@ -172,50 +207,11 @@ class _LoginState extends State<Login> {
                             visible: visible,
                             child: Container(
                                 child: const CircularProgressIndicator(
-                              color: Colors.white,
+                              color: Colors.black,
                             ))),
                       ],
                     ),
                   ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    MaterialButton(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20.0),
-                        ),
-                      ),
-                      elevation: 5.0,
-                      height: 40,
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Signup(),
-                          ),
-                        );
-                      },
-                      color: Colors.blue[900],
-                      child: const Text(
-                        "Signup",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),

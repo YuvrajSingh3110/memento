@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:memento/model/event.dart';
 import 'package:memento/services/localDb/localDb.dart';
-import 'package:memento/services/provider/roleProvider.dart';
-import 'package:provider/provider.dart';
 
 class EventProvider extends ChangeNotifier {
   final user = FirebaseAuth.instance;
@@ -18,11 +16,6 @@ class EventProvider extends ChangeNotifier {
   void setDate(DateTime date) => _selectedDate = date;
 
   List<Event> get eventsOfSelectedDate => _events;
-
-  // void getRole(BuildContext context){
-  //   RoleProvider roleProvider = Provider.of<RoleProvider>(context, listen: false);
-  //   UserRole userRole = RoleProvider.currentUserRole;
-  // }
 
   void addEvent(Event event) async{
     await addEventToFirestore(event);
@@ -45,10 +38,8 @@ class EventProvider extends ChangeNotifier {
   }
 
   Future<void> addEventToFirestore(Event event) async {
-    String? role = await LocalDb.getRole();
-    role = role?.toLowerCase();
     final CollectionReference<Map<String, dynamic>> eventsCollection = FirebaseFirestore.instance
-        .collection(role!);
+        .collection('patient');
 
     Map<String, dynamic> eventMap = {
       'title': event.title,
@@ -63,21 +54,17 @@ class EventProvider extends ChangeNotifier {
   }
 
   Future<void> deleteEventFromFirestore(String eventId) async {
-    String? role = await LocalDb.getRole();
-    role = role?.toLowerCase();
     final CollectionReference eventsCollection = FirebaseFirestore.instance
-    .collection(role!)
+    .collection("patient")
         .doc(user.currentUser!.uid)
         .collection('events');
     await eventsCollection.doc(eventId).delete();
   }
 
   Future<void> updateEventToFirestore(int index, Event event) async {
-    String? role = await LocalDb.getRole();
-    role = role?.toLowerCase();
     String eventId = index.toString();
     final CollectionReference<Map<String, dynamic>> eventsCollection = FirebaseFirestore.instance
-    .collection(role!);
+    .collection("patient");
 
     Map<String, dynamic> eventMap = {
       'title': event.title,
@@ -90,20 +77,20 @@ class EventProvider extends ChangeNotifier {
     print("updated event in firebase");
   }
 
-  Future<void> fetchEvents() async {
-    String? role = await LocalDb.getRole();
-    role = role?.toLowerCase();
+  Future<List<Event>?> fetchEvents() async {
     try {
-      final QuerySnapshot eventSnapshot = await FirebaseFirestore.instance.collection(role!).doc(user.currentUser!.uid).collection("event").get();
+      final QuerySnapshot eventSnapshot = await FirebaseFirestore.instance.collection("patient").doc(user.currentUser!.uid).collection("event").get();
       List<String> eventIDs = eventSnapshot.docs.map((doc) => doc).cast<String>().toList();
       final List<Event> fetchedEvents = await _fetchEventsDetails(eventIDs);
       print("fetchedEvents $fetchedEvents");
-      _events = fetchedEvents;
+      //_events = fetchedEvents;
+      return fetchedEvents;
       //_events = eventSnapshot.docs.map((doc) => Event.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
       notifyListeners();
     } catch (error) {
       // Handle error
       print('Error fetching events: $error');
+      return null;
     }
   }
 

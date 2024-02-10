@@ -5,8 +5,9 @@ class Styles{
     return ThemeData(
         colorScheme: const ColorScheme.light(
             brightness: Brightness.light,
-            primary: Color(0xffffecd0),
-            secondary: Color(0xffff3974)
+            primary: Colors.black,
+            secondary: Colors.grey,
+          tertiary: Colors.white
         )
     );
   }

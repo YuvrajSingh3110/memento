@@ -32,13 +32,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _parentList = [
     const HomeParent(),
     const MapScreenParent(),
-    const ChatBot(),
     const ProfileParent(),
   ];
 
   final List<Widget> _patientList = [
     const HomePatient(),
-    const MapScreenPatient(),
     const ChatBot(),
     const ProfilePatient(),
   ];
@@ -105,17 +103,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   ),
                   GButton(
                     iconSize: 28,
-                    icon:
-                    _selectedIndex == 1 ? Icons.map : Icons.map_outlined,
-                    text: 'Map',
+                    icon: _role == "Parent" ?
+                    (_selectedIndex == 1 ? Icons.map : Icons.map_outlined) : (_selectedIndex == 1 ? Icons.chat : Icons.chat_bubble),
+                    text: _role == "Parent" ? 'Maps' : "Chat",
                   ),
-                  GButton(
-                    iconSize: 29,
-                    icon: _selectedIndex == 2
-                        ? CupertinoIcons.settings_solid
-                        : CupertinoIcons.settings_solid,
-                    text: 'Help',
-                  ),
+                  // GButton(
+                  //   iconSize: 29,
+                  //   icon: _selectedIndex == 2
+                  //       ? CupertinoIcons.settings_solid
+                  //       : CupertinoIcons.settings_solid,
+                  //   text: 'Help',
+                  // ),
                   GButton(
                     iconSize: 29,
                     icon: _selectedIndex == 3

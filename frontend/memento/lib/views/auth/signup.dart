@@ -48,7 +48,7 @@ class _SignupState extends State<Signup> {
         child: Column(
           children: [
             Container(
-              color: Colors.blueGrey,
+              color: Colors.white,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
@@ -67,7 +67,7 @@ class _SignupState extends State<Signup> {
                           "Signup",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 40,
                           ),
                         ),
@@ -86,13 +86,15 @@ class _SignupState extends State<Signup> {
                             enabled: true,
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 8.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           validator: (value) {
@@ -116,13 +118,15 @@ class _SignupState extends State<Signup> {
                             enabled: true,
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 8.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           validator: (value) {
@@ -152,13 +156,15 @@ class _SignupState extends State<Signup> {
                             enabled: true,
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 8.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           validator: (value) {
@@ -198,13 +204,15 @@ class _SignupState extends State<Signup> {
                             enabled: true,
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 15.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           validator: (value) {
@@ -242,13 +250,15 @@ class _SignupState extends State<Signup> {
                             enabled: true,
                             contentPadding: const EdgeInsets.only(
                                 left: 14.0, bottom: 8.0, top: 15.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(20),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           validator: (value) {
@@ -273,14 +283,15 @@ class _SignupState extends State<Signup> {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ),
                             DropdownButton<String>(
-                              dropdownColor: Colors.blue[600],
+                              dropdownColor: Colors.white,
+                              borderRadius: BorderRadius.circular(25),
                               isDense: true,
                               isExpanded: false,
-                              iconEnabledColor: Colors.white,
+                              iconEnabledColor: Colors.black,
                               focusColor: Colors.white,
                               items: options.map((String dropDownStringItem) {
                                 return DropdownMenuItem<String>(
@@ -288,7 +299,7 @@ class _SignupState extends State<Signup> {
                                   child: Text(
                                     dropDownStringItem,
                                     style: const TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                     ),
@@ -308,14 +319,15 @@ class _SignupState extends State<Signup> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             MaterialButton(
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0))),
-                              elevation: 5.0,
                               height: 40,
+                              textColor: Colors.white,
                               onPressed: () {
                                 setState(() {
                                   showProgress = true;
@@ -323,20 +335,20 @@ class _SignupState extends State<Signup> {
                                 signUp(nameController.text, emailController.text, mobileNumberController.text,
                                     passwordController.text, role);
                               },
-                              color: Colors.white,
+                              color: Colors.black,
                               child: const Text(
                                 "Signup",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 25,
                                 ),
                               ),
                             ),
                             MaterialButton(
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0))),
-                              elevation: 5.0,
-                              height: 40,
+                                      BorderRadius.all(Radius.circular(25.0),)),
+                              height: 50,
+                              hoverColor: Colors.black,
                               onPressed: () {
                                 const CircularProgressIndicator();
                                 Navigator.push(
@@ -350,7 +362,7 @@ class _SignupState extends State<Signup> {
                               child: const Text(
                                 "Login",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 25,
                                 ),
                               ),
                             ),
@@ -387,7 +399,12 @@ class _SignupState extends State<Signup> {
     }else{
       ref = firebaseFirestore.collection('patient');
     }
-    ref.doc(user!.uid).set({'name': name, 'email': email, 'mobile': mobile, 'password': password, 'role': role,'patients':[]});
+    ref.doc(user!.uid).set({'name': name, 'email': email, 'mobile': mobile, 'password': password, 'role': role,});
+    if(role == "parent"){
+      ref.doc(user.uid).set({'patients': []});
+    }else{
+      ref.doc(user.uid).set({'events': [], 'location': GeoPoint});
+    }
     UserRole userRole = _convertStringToUserRole(role);
     RoleProvider roleProvider = Provider.of<RoleProvider>(context, listen: false);
     roleProvider.updateUserRole(userRole);
