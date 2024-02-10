@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:memento/services/localDb/localDb.dart';
 import 'package:memento/services/provider/provider.dart';
+import 'package:memento/services/provider/roleProvider.dart';
+import 'package:memento/services/provider/userprovider.dart';
 import 'package:memento/views/auth/login.dart';
 import 'package:memento/widgets/bottomNavBar.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +18,7 @@ void main() async {
   runApp(const MyApp());
 }
 
-class FirebaseApi {
-}
+class FirebaseApi {}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -59,18 +60,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: ((context) => EventProvider()),
-      child: MaterialApp(
-          title: 'Memento',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            useMaterial3: true,
-          ),
-          home: isLogin
-              ? BottomNavBar(role: role)
-              : const Login(),
-        ),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => UserProvider()),
+          ChangeNotifierProvider(create: (_) => EventProvider()),
+          ChangeNotifierProvider(create: (_) => RoleProvider())
+        ],
+        child: Consumer<UserProvider>(
+          builder: (context, UserProvider, child) {
+            return MaterialApp(
+              title: 'Memento',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                useMaterial3: true,
+              ),
+              home: isLogin ? BottomNavBar(role: role) : const Login(),
+            );
+          },
+        ));
   }
 }

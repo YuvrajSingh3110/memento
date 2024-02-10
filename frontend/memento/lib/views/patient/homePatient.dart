@@ -26,8 +26,8 @@ class _HomeScreenState extends State<HomePatient> {
           Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: IconButton(
-                icon: Icon(Icons.document_scanner_outlined),
-                onPressed: () => QRGenerationScreen(),
+                icon: Icon(Icons.qr_code),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QRGenerationScreen())),
               )
           )
         ],

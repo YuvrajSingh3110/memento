@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:memento/services/localDb/localDb.dart';
 import 'package:memento/views/auth/signup.dart';
 
 import '../../widgets/bottomNavBar.dart';
@@ -224,10 +225,11 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void route() {
+  void route() async{
+    String? role = await LocalDb.getRole();
     User? user = FirebaseAuth.instance.currentUser;
     var kk = FirebaseFirestore.instance
-        .collection('users')
+        .collection(role!.toLowerCase())
         .doc(user!.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
