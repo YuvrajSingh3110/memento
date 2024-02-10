@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -19,16 +20,19 @@ class HomeParent extends StatefulWidget {
 }
 
 class _HomeParentState extends State<HomeParent> {
+  User? user = FirebaseAuth.instance.currentUser;
   String qrResult = "Not Yet Scanned";
 
    Future<void> scanQRCode() async {
     try {
+      final String  id = user!.uid;
+      print("id $id");
       final qrCode = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", false, ScanMode.QR);
       if (!mounted) return;
       setState(() {
         qrResult = qrCode;
-        addUserIdTousersList(qrResult, "XJ2iXZZyN9Qj0LEFQoND81jUixz1");
+        addUserIdTousersList(qrResult, id);
       });
     } on PlatformException {
       qrResult = "Failed to get platform version";

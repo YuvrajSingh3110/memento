@@ -2,8 +2,6 @@ import 'package:memento/model/event.dart';
 import 'package:memento/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../model/event.dart';
 import '../../services/provider/provider.dart';
 
 class EventEditingScreen extends StatefulWidget {

@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/localDb/localDb.dart';
+import '../../services/provider/roleProvider.dart';
 import '../../widgets/bottomNavBar.dart';
 import 'login.dart';
 
@@ -385,12 +387,27 @@ class _SignupState extends State<Signup> {
     }else{
       ref = firebaseFirestore.collection('patient');
     }
-    ref.doc(user!.uid).set({'name': name, 'email': email, 'mobile': mobile, 'password': password, 'role': role});
+    ref.doc(user!.uid).set({'name': name, 'email': email, 'mobile': mobile, 'password': password, 'role': role, 'event': []});
+    UserRole userRole = _convertStringToUserRole(role);
+    RoleProvider roleProvider = Provider.of<RoleProvider>(context, listen: false);
+    roleProvider.updateUserRole(userRole);
     await LocalDb.saveName(name);
     await LocalDb.saveEmail(email);
     await LocalDb.saveMobile(mobile);
     await LocalDb.saveRole(role);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => BottomNavBar(role: role)));
+  }
+
+  UserRole _convertStringToUserRole(String role) {
+    switch (role.toLowerCase()) {
+      case 'parent':
+        return UserRole.Parent;
+      case 'patient':
+        return UserRole.Patient;
+      default:
+      // Handle unknown role or throw an error
+        throw Exception('Unknown role: $role');
+    }
   }
 }
