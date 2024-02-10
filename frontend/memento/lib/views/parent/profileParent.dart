@@ -26,7 +26,10 @@ class _ProfileScreenState extends State<ProfileParent> {
   Future<void> _handleLogout() async {
     try {
       //await LocalDb.clearUserData(); // Clears user data from SharedPreferences
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login())); // Navigate to the login screen
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Login())); // Navigate to the login screen
     } catch (e) {
       print("Error during logout: $e");
     }
@@ -37,7 +40,11 @@ class _ProfileScreenState extends State<ProfileParent> {
 
     if (user != null) {
       // Use the user's UID to fetch additional data from Firestore
-      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore
+          .instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
 
       setState(() {
         userName = userData['name'];
@@ -46,6 +53,7 @@ class _ProfileScreenState extends State<ProfileParent> {
       });
     }
   }
+
   String capitalizeFirstLetter(String input) {
     if (input.isEmpty) {
       return input;
@@ -55,6 +63,9 @@ class _ProfileScreenState extends State<ProfileParent> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: null,
       body: Padding(
@@ -64,103 +75,268 @@ class _ProfileScreenState extends State<ProfileParent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 60,
-                backgroundImage: AssetImage('assets/profile.png'),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                userName ?? "Loading...",
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
+              SizedBox(height: height * 0.05),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  const SizedBox(height: 20),
+
+                  // user info
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
-                        LineAwesomeIcons.envelope,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 5),
                       Text(
-                        userEmail ?? "Loading..",
+                        userName ?? "Loading...",
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                LineAwesomeIcons.envelope,
+                                size: 16,
+                              ),
+                              SizedBox(width: width * 0.05),
+                              Text(
+                                userEmail ?? "Loading..",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 5,
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                LineAwesomeIcons.phone,
+                                size: 18,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                                height: 10,
+                              ),
+                              Text(
+                                phoneNumber ?? "No phone number",
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors
+                                      .grey[200], // Light gray background color
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Circular border radius
+                                ),
+                                child: Text(
+                                  "Parent",
+                                  style: TextStyle(
+                                      // Define the style for the text if needed
+                                      ),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 5,
+                            height: 10,
+                          ),
+
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        LineAwesomeIcons.phone,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        phoneNumber ?? "No phone number",
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ],
+
+
+
+                  const SizedBox(
+                    height: 10,
+                    width: 40,
+                  ),
+
+
+                  // avart image
+                  const CircleAvatar(
+                    radius: 60,
+                    backgroundImage: AssetImage('assets/profile.png'),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                    width: width * 0.05,
                   ),
                 ],
               ),
+              // profile image
 
-
-
+              // text content //edit profile button
               const SizedBox(height: 24),
+
+              // edit button
               SizedBox(
-                width: 200,
-                height: 60,
+                width: width * 0.45,
+                height: height * 0.06,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditProfileScreen(
-                        userName: userName ?? "",
-                        userEmail: userEmail ?? "",
-                        phoneNumber: phoneNumber ?? "",
-                        onUpdateName: (name) {
-                          setState(() {
-                            userName = name;
-                          });
-                        },
-                        onUpdateEmail: (email) {
-                          setState(() {
-                            userEmail = email;
-                          });
-                        },
-                        onUpdateMobile: (mobile) {
-                          setState(() {
-                            phoneNumber = mobile;
-                          });
-                        },
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditProfileScreen(
+                          userName: userName ?? "",
+                          userEmail: userEmail ?? "",
+                          phoneNumber: phoneNumber ?? "",
+                          onUpdateName: (name) {
+                            setState(() {
+                              userName = name;
+                            });
+                          },
+                          onUpdateEmail: (email) {
+                            setState(() {
+                              userEmail = email;
+                            });
+                          },
+                          onUpdateMobile: (mobile) {
+                            setState(() {
+                              phoneNumber = mobile;
+                            });
+                          },
+                        ),
                       ),
                     ),
+
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                      return Colors.white; // Transparent background color
+                    }),
+                    side: MaterialStateProperty.all(
+                        BorderSide(color: Colors.black)), // Black border
                   ),
-                  child: const Text(
-                    "Edit Profile",
-                    style: TextStyle(fontSize: 18),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.edit, color: Colors.black), // Edit icon
+                      SizedBox(width: 8), // Spacer between icon and text
+                      Text(
+                        "Edit Profile",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
+                    ],
                   ),
                 ),
               ),
+
+              SizedBox(height: height * 0.02),
+
+              // accessiblity features
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300], // Light gray background color
+                  borderRadius:
+                      BorderRadius.circular(12), // Circular border radius
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child: const Icon(
+                            LineAwesomeIcons.language,
+                            color: Colors.white,
+                            size: 36,
+                          ),
+                        ),
+                        SizedBox(height: height * 0.01),
+                        Text("Change"),
+                        Text("Language")
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child: const Icon(
+                            LineAwesomeIcons.language,
+                            color: Colors.white,
+                            size: 36,
+                          ),
+                        ),
+                        SizedBox(height: height * 0.01),
+                        Text("Change "),
+                        Text("Font Size"),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child: const Icon(
+                            LineAwesomeIcons.language,
+                            color: Colors.white,
+                            size: 36,
+                          ),
+                        ),
+                        SizedBox(height: height * 0.01),
+                        Text("Use"),
+                        Text("Voice"),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
               // Add more Text widgets for other user details if needed
-              const SizedBox(height: 24),
               const SizedBox(height: 10),
-              MenuItemWidget(title: "settings", icon: LineAwesomeIcons.cog, onPress: () {}),
-              MenuItemWidget(title: "Notifications", icon: LineAwesomeIcons.bell, onPress: () {}),
-              const Divider(color: Colors.grey,),
+              MenuItemWidget(
+                  title: "settings",
+                  icon: LineAwesomeIcons.cog,
+                  onPress: () {}),
+              MenuItemWidget(
+                  title: "Notifications",
+                  icon: LineAwesomeIcons.bell,
+                  onPress: () {}),
+              const Divider(
+                color: Colors.grey,
+              ),
               const SizedBox(height: 10),
-              MenuItemWidget(title: "Information", icon: LineAwesomeIcons.info, onPress: () {}),
+              MenuItemWidget(
+                  title: "Information",
+                  icon: LineAwesomeIcons.info,
+                  onPress: () {}),
               MenuItemWidget(
                 title: "Logout",
                 textColor: Colors.red,
@@ -171,7 +347,6 @@ class _ProfileScreenState extends State<ProfileParent> {
             ],
           ),
         ),
-
       ),
     );
   }
@@ -183,7 +358,7 @@ class MenuItemWidget extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.onPress,
-    this.endIcon=true,
+    this.endIcon = true,
     this.textColor,
   }) : super(key: key);
 
@@ -198,35 +373,37 @@ class MenuItemWidget extends StatelessWidget {
     return ListTile(
       onTap: onPress,
       leading: Container(
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: Colors.blueAccent.withOpacity(0.1),
+          color: Colors.grey.withOpacity(0.3),
         ),
         child: Icon(
           icon,
-          color: Colors.blueAccent,
+          color: Colors.black,
         ),
       ),
       title: Text(
         title,
         style: Theme.of(context).textTheme.bodyMedium?.apply(color: textColor),
       ),
-      trailing: endIcon? Container(
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            color: Colors.grey.withOpacity(0.1),
-          ),
-          child: const Icon(LineAwesomeIcons.angle_right, size: 18, color: Colors.grey)):null,
+      trailing: endIcon
+          ? Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.1),
+              ),
+              child: const Icon(LineAwesomeIcons.angle_right,
+                  size: 18, color: Colors.grey))
+          : null,
     );
   }
 }
 
-
-
+// edit profile
 class EditProfileScreen extends StatefulWidget {
   final String userName;
   final String userEmail;
@@ -298,8 +475,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _handleSave() async {
-
-
     // Validate phone number
     if (!isValidPhoneNumber(phoneController.text)) {
       setState(() {
@@ -313,7 +488,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (user != null) {
       try {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({
           'name': nameController.text,
           'phone': phoneController.text,
         });
@@ -330,7 +508,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
     }
   }
-
 
   bool isValidPhoneNumber(String phoneNumber) {
     // Add your phone number validation logic using regex
