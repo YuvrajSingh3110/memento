@@ -222,10 +222,11 @@ class _LoginState extends State<Login> {
   }
 
   void route() async{
-    String? role = await LocalDb.getRole();
+    String role = "Parent";
+    role = (await LocalDb.getRole())!;
     User? user = FirebaseAuth.instance.currentUser;
     var kk = FirebaseFirestore.instance
-        .collection(role!.toLowerCase())
+        .collection(role.toLowerCase())
         .doc(user!.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) {

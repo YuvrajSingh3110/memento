@@ -79,8 +79,8 @@ class EventProvider extends ChangeNotifier {
 
   Future<List<Event>?> fetchEvents() async {
     try {
-      final QuerySnapshot eventSnapshot = await FirebaseFirestore.instance.collection("patient").doc(user.currentUser!.uid).collection("event").get();
-      List<String> eventIDs = eventSnapshot.docs.map((doc) => doc).cast<String>().toList();
+      final QuerySnapshot<Map<String, dynamic>> eventSnapshot = await FirebaseFirestore.instance.collection("patient").doc(user.currentUser!.uid).collection("event").get();
+      List<String> eventIDs = eventSnapshot.docs.map((doc) => doc.id).toList();
       final List<Event> fetchedEvents = await _fetchEventsDetails(eventIDs);
       print("fetchedEvents $fetchedEvents");
       //_events = fetchedEvents;

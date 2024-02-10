@@ -11,8 +11,8 @@ import 'package:provider/provider.dart';
 import '../../services/provider/provider.dart';
 
 class MapScreenPatient extends StatefulWidget {
-  const MapScreenPatient({super.key,required this.ind});
-  final ind;
+  const MapScreenPatient({super.key,required this.position});
+  final position;
 
   @override
   State<MapScreenPatient> createState() => _MapScreenPatientState();
@@ -22,7 +22,6 @@ class _MapScreenPatientState extends State<MapScreenPatient> {
   final mapsApiKey = "AIzaSyBAC_OF_lWBfFr_Zjs-mO0Kwyr4f_faiMU";
   late GoogleMapController mapController;
   String? user_id = FirebaseAuth.instance.currentUser!.uid;
-  var index = 0;
   // LocationData? _currentLocation = LocationData.fromMap({
   //   "latitude": 31.3310016,
   //   "longitude" : 75.5734925,
@@ -96,27 +95,27 @@ class _MapScreenPatientState extends State<MapScreenPatient> {
     });
   }
 
-  Future<void> getEventRoutes(int index) async{
-    final provider = Provider.of<EventProvider>(context, listen: false);
-    List<Event>? userEvent = await provider.fetchEvents();
-    print("UserEvent $userEvent");
-    if (userEvent != null && userEvent.isNotEmpty) {
-      //userEvent.sort((a, b) => a.from.compareTo(b.from));
-      List<GeoPoint> locations = userEvent.map((event) => event.position).toList();
-      print("Sorted Events: $userEvent");
-      print("Locations: $locations");
-      setState(() {
-        destLocation = locations[index].latitude as LatLng;
-      });
-    } else {
-      print("No events found");
-    }
-  }
+  // Future<void> getEventRoutes(LatLng position) async{
+  //   final provider = Provider.of<EventProvider>(context, listen: false);
+  //   List<Event>? userEvent = await provider.fetchEvents();
+  //   print("UserEvent $userEvent");
+  //   if (userEvent != null && userEvent.isNotEmpty) {
+  //     //userEvent.sort((a, b) => a.from.compareTo(b.from));
+  //     List<GeoPoint> locations = userEvent.map((event) => event.position).toList();
+  //     print("Sorted Events: $userEvent");
+  //     print("Locations: $locations");
+  //     setState(() {
+  //       destLocation = locations[index].latitude as LatLng;
+  //     });
+  //   } else {
+  //     print("No events found");
+  //   }
+  // }
 
   @override
   void initState() {
-    index = widget.ind;
-    getEventRoutes(index);
+    destLocation = widget.position;
+    //getEventRoutes(position);
     getListofPatientsLatLng();
     super.initState();
   }

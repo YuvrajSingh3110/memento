@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../services/localDb/localDb.dart';
+import '../../widgets/safeWebView.dart';
 import '../auth/login.dart';
 
 class ProfilePatient extends StatefulWidget {
@@ -16,6 +18,7 @@ class _ProfileScreenState extends State<ProfilePatient> {
   String? userName = "loading...";
   String? userEmail = "";
   String? phoneNumber = "";
+  final Uri _url = Uri.parse('https://prairie-polonium-b69.notion.site/A-small-problem-summary-research-on-Dementia-patients-and-on-their-symptom-of-forgetting-their-way-w-0aff6faa473e4ac5bb14a08b7b3f97f5');
 
   @override
   void initState() {
@@ -25,8 +28,11 @@ class _ProfileScreenState extends State<ProfilePatient> {
 
   Future<void> _handleLogout() async {
     try {
-      await LocalDb.clearUserData(); // Clears user data from SharedPreferences
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login())); // Navigate to the login screen
+      //await LocalDb.clearUserData(); // Clears user data from SharedPreferences
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Login())); // Navigate to the login screen
     } catch (e) {
       print("Error during logout: $e");
     }
@@ -39,7 +45,11 @@ class _ProfileScreenState extends State<ProfilePatient> {
       // Use the user's UID to fetch additional data from Firestore
       String? role = await LocalDb.getRole();
 
-      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore.instance.collection(role!.toLowerCase()).doc(user.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore
+          .instance
+          .collection(role!.toLowerCase())
+          .doc(user.uid)
+          .get();
 
       setState(() {
         userName = userData['name'];
@@ -48,12 +58,20 @@ class _ProfileScreenState extends State<ProfilePatient> {
       });
     }
   }
+
   String capitalizeFirstLetter(String input) {
     if (input.isEmpty) {
       return input;
     }
     return input[0].toUpperCase() + input.substring(1);
   }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -63,306 +81,310 @@ class _ProfileScreenState extends State<ProfilePatient> {
       appBar: null,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(height: height * 0.02),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // user info
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        userName ?? "Loading...",
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(width: width * 0.01),
-                              Text(
-                                userEmail ?? "Loading..",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 5,
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                width: 5,
-                                height: 10,
-                              ),
-                              Text(
-                                phoneNumber ?? "No phone number",
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(width: width*0.02,),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: Colors
-                                      .grey[200], // Light gray background color
-                                  borderRadius: BorderRadius.circular(
-                                      20), // Circular border radius
-                                ),
-                                child: Text(
-                                  "Patient",
-                                  style: TextStyle(
-                                    // Define the style for the text if needed
-                                  ),
-                                ),
-                              )
-                            ],
-
-                          ),
-                          const SizedBox(
-                            width: 5,
-                            height: 10,
-                          ),
-
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: Colors
-                                      .grey[200], // Light gray background color
-                                  borderRadius: BorderRadius.circular(
-                                      20), // Circular border radius
-                                ),
-                                child: Row(
-                                  children: [
-                                    Image.asset("assets/icons/cake.png"),
-                                    Text(
-                                      "78",
-                                      style: TextStyle(
-                                        // Define the style for the text if needed
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 5, height: 10,),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: Colors
-                                      .grey[200], // Light gray background color
-                                  borderRadius: BorderRadius.circular(
-                                      20), // Circular border radius
-                                ),
-                                child:
-
-                                Row(
-                                  children: [
-                                    Image.asset("assets/icons/gender.png"),
-                                    Text(
-                                      "Male",
-                                      style: TextStyle(
-                                        // Define the style for the text if needed
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-
-                  // avart image
-                  const CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage('assets/profile.png'),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                    width: width * 0.05,
-                  ),
-                ],
-              ),
-              // profile image
-
-              // text content //edit profile button
-              const SizedBox(height: 24),
-
-              // edit button
-              SizedBox(
-                width: width * 0.45,
-                height: height * 0.06,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditProfileScreen(
-                        userName: userName ?? "",
-                        userEmail: userEmail ?? "",
-                        phoneNumber: phoneNumber ?? "",
-                        onUpdateName: (name) {
-                          setState(() {
-                            userName = name;
-                          });
-                        },
-                        onUpdateEmail: (email) {
-                          setState(() {
-                            userEmail = email;
-                          });
-                        },
-                        onUpdateMobile: (mobile) {
-                          setState(() {
-                            phoneNumber = mobile;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                          return Colors.white; // Transparent background color
-                        }),
-                    side: MaterialStateProperty.all(
-                        BorderSide(color: Colors.black)), // Black border
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.edit, color: Colors.black), // Edit icon
-                      SizedBox(width: 8), // Spacer between icon and text
-                      Text(
-                        "Edit Profile",
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              SizedBox(height: height * 0.02),
-
-              // accessiblity features
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300], // Light gray background color
-                  borderRadius:
-                  BorderRadius.circular(12), // Circular border radius
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: height * 0.02),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // user info
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.04,
-                              vertical: height * 0.02),
-                          decoration: BoxDecoration(
-                            color: Colors.black, // Light gray background color
-                            borderRadius: BorderRadius.circular(
-                                50), // Circular border radius
-                          ),
-                          child:
-                          Image.asset("assets/icons/language.png")
-                        ),
-                        SizedBox(height: height * 0.01),
-                        Text("Change"),
-                        Text("Language")
-                      ],
+                    Text(
+                      userName ?? "Loading...",
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.04,
-                              vertical: height * 0.02),
-                          decoration: BoxDecoration(
-                            color: Colors.black, // Light gray background color
-                            borderRadius: BorderRadius.circular(
-                                50), // Circular border radius
-                          ),
-                          child:          
-                          Image.asset("assets/icons/fontsize.png")
-
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: width * 0.01),
+                            Text(
+                              userEmail ?? "Loading..",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: height * 0.01),
-                        Text("Change "),
-                        Text("Font Size"),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.04,
-                              vertical: height * 0.02),
-                          decoration: BoxDecoration(
-                            color: Colors.black, // Light gray background color
-                            borderRadius: BorderRadius.circular(
-                                50), // Circular border radius
-                          ),
-                          child:
-                          Image.asset("assets/icons/voice.png")
+                        const SizedBox(
+                          width: 5,
+                          height: 10,
                         ),
-                        SizedBox(height: height * 0.01),
-                        Text("Use"),
-                        Text("Voice"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              width: 5,
+                              height: 10,
+                            ),
+                            Text(
+                              phoneNumber ?? "No phone number",
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                            SizedBox(
+                              width: width * 0.02,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .grey[200], // Light gray background color
+                                borderRadius: BorderRadius.circular(
+                                    20), // Circular border radius
+                              ),
+                              child: Text(
+                                "Patient",
+                                style: TextStyle(
+                                    // Define the style for the text if needed
+                                    ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 5,
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .grey[200], // Light gray background color
+                                borderRadius: BorderRadius.circular(
+                                    20), // Circular border radius
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset("assets/icons/cake.png",
+                                      height: 20, width: 20),
+                                  Text(
+                                    "78",
+                                    style: TextStyle(
+                                        // Define the style for the text if needed
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                              height: 10,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Colors
+                                    .grey[200], // Light gray background color
+                                borderRadius: BorderRadius.circular(
+                                    20), // Circular border radius
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset("assets/icons/gender.png",
+                                      height: 20, width: 20),
+                                  Text(
+                                    "Male",
+                                    style: TextStyle(
+                                        // Define the style for the text if needed
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ],
                 ),
-              ),
 
-              // Add more Text widgets for other user details if needed
-              const SizedBox(height: 10),
-              MenuItemWidget(
-                  title: "settings",
-                  icon: LineAwesomeIcons.cog,
-                  onPress: () {}),
-              MenuItemWidget(
-                  title: "Notifications",
-                  icon: LineAwesomeIcons.bell,
-                  onPress: () {}),
-              const Divider(
-                color: Colors.grey,
+                // avart image
+                const CircleAvatar(
+                  radius: 60,
+                  backgroundImage: AssetImage('assets/profile.png'),
+                ),
+                SizedBox(
+                  height: height * 0.02,
+                  width: width * 0.05,
+                ),
+              ],
+            ),
+            // profile image
+
+            // text content //edit profile button
+            const SizedBox(height: 24),
+
+            // edit button
+            SizedBox(
+              width: width * 0.45,
+              height: height * 0.06,
+              child: ElevatedButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfileScreen(
+                      userName: userName ?? "",
+                      userEmail: userEmail ?? "",
+                      phoneNumber: phoneNumber ?? "",
+                      onUpdateName: (name) {
+                        setState(() {
+                          userName = name;
+                        });
+                      },
+                      onUpdateEmail: (email) {
+                        setState(() {
+                          userEmail = email;
+                        });
+                      },
+                      onUpdateMobile: (mobile) {
+                        setState(() {
+                          phoneNumber = mobile;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                    return Colors.white; // Transparent background color
+                  }),
+                  side: MaterialStateProperty.all(
+                      BorderSide(color: Colors.black)), // Black border
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.edit, color: Colors.black), // Edit icon
+                    SizedBox(width: 8), // Spacer between icon and text
+                    Text(
+                      "Edit Profile",
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 10),
-              MenuItemWidget(
-                  title: "Information",
-                  icon: LineAwesomeIcons.info,
-                  onPress: () {}),
-              MenuItemWidget(
-                title: "Logout",
-                textColor: Colors.red,
-                icon: LineAwesomeIcons.alternate_sign_out,
-                endIcon: false,
-                onPress: _handleLogout,
+            ),
+
+            SizedBox(height: height * 0.02),
+
+            // accessiblity features
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.grey[300], // Light gray background color
+                borderRadius:
+                    BorderRadius.circular(12), // Circular border radius
               ),
-            ],
-          ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child: Image.asset("assets/icons/language.png",
+                              height: 30, width: 30)),
+                      SizedBox(height: height * 0.01),
+                      Text("Change"),
+                      Text("Language")
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child: Image.asset("assets/icons/fontsize.png",
+                              height: 30, width: 30)),
+                      SizedBox(height: height * 0.01),
+                      Text("Change "),
+                      Text("Font Size"),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child: Image.asset("assets/icons/voice.png",
+                              height: 30, width: 30)),
+                      SizedBox(height: height * 0.01),
+                      Text("Use"),
+                      Text("Voice"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // Add more Text widgets for other user details if needed
+            const SizedBox(height: 10),
+            MenuItemWidget(
+                title: "settings", icon: LineAwesomeIcons.cog, onPress: () {}),
+            MenuItemWidget(
+                title: "Notifications",
+                icon: LineAwesomeIcons.bell,
+                onPress: () {}),
+            const Divider(
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 10),
+            MenuItemWidget(
+                title: "Information",
+                icon: LineAwesomeIcons.info,
+                onPress: () {
+                  _launchUrl();
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => SafeWebView(
+                  //               url: "https://prairie-polonium-b69.notion.site/A-small-problem-summary-research-on-Dementia-patients-and-on-their-symptom-of-forgetting-their-way-w-0aff6faa473e4ac5bb14a08b7b3f97f5"
+                  //             )));
+                }),
+            MenuItemWidget(
+              title: "Logout",
+              textColor: Colors.red,
+              icon: LineAwesomeIcons.alternate_sign_out,
+              endIcon: false,
+              onPress: _handleLogout,
+            ),
+          ],
         ),
+      ),
     );
   }
 }
@@ -373,7 +395,7 @@ class MenuItemWidget extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.onPress,
-    this.endIcon=true,
+    this.endIcon = true,
     this.textColor,
   }) : super(key: key);
 
@@ -403,19 +425,20 @@ class MenuItemWidget extends StatelessWidget {
         title,
         style: Theme.of(context).textTheme.bodyMedium?.apply(color: textColor),
       ),
-      trailing: endIcon? Container(
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            color: Colors.grey.withOpacity(0.1),
-          ),
-          child: const Icon(LineAwesomeIcons.angle_right, size: 18, color: Colors.grey)):null,
+      trailing: endIcon
+          ? Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.1),
+              ),
+              child: const Icon(LineAwesomeIcons.angle_right,
+                  size: 18, color: Colors.grey))
+          : null,
     );
   }
 }
-
-
 
 class EditProfileScreen extends StatefulWidget {
   final String userName;
@@ -488,8 +511,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _handleSave() async {
-
-
     // Validate phone number
     if (!isValidPhoneNumber(phoneController.text)) {
       setState(() {
@@ -503,7 +524,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (user != null) {
       try {
-        await FirebaseFirestore.instance.collection('patient').doc(user.uid).update({
+        await FirebaseFirestore.instance
+            .collection('patient')
+            .doc(user.uid)
+            .update({
           'name': nameController.text,
           'phone': phoneController.text,
         });
@@ -520,7 +544,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
     }
   }
-
 
   bool isValidPhoneNumber(String phoneNumber) {
     // Add your phone number validation logic using regex

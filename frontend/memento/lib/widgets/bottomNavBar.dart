@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:memento/views/parent/mapScreen.dart';
 import 'package:memento/views/patient/chatBot.dart';
 import 'package:memento/views/patient/mapscreenpatient.dart';
@@ -97,8 +98,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   GButton(
                     iconSize: _selectedIndex != 0 ? 28 : 25,
                     icon: _selectedIndex == 0
-                        ? CupertinoIcons.home
-                        : CupertinoIcons.home,
+                        ? LineAwesomeIcons.home
+                        : LineAwesomeIcons.home,
                     text: 'Home',
                   ),
                   GButton(

@@ -1,5 +1,6 @@
 import 'package:memento/model/eventDataSource.dart';
 import 'package:flutter/material.dart';
+import 'package:memento/views/patient/showEvents.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -43,7 +44,8 @@ class _TaskWidgetState extends State<TaskWidget> {
         onTap: (details) {
           if(details.appointments == null) return;
           final event = details.appointments!.first;
-          Navigator.push(context, MaterialPageRoute(builder: (context) => EventViewing(event: event),));
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => EventViewing(event: event),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ShowEvents(),));
         },
       )
     );

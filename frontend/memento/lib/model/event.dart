@@ -7,7 +7,7 @@ class Event {
   final String? desc;
   final DateTime from;
   final DateTime to;
-  final GeoPoint position;
+  final GeoPoint position = const GeoPoint(23.209915077246425, 72.58477158844471);
   final Color bgColor;
   final bool isAllDay;
 
@@ -16,9 +16,8 @@ class Event {
       this.desc,
       required this.from,
       required this.to,
-      required this.position,
       this.bgColor = Colors.lightBlueAccent,
-      this.isAllDay = false});
+      this.isAllDay = false, required position});
 
   factory Event.fromMap(Map<String, dynamic> map, String id) {
     return Event(

@@ -61,11 +61,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
     return Drawer(
       child: Container(
-        margin: EdgeInsets.all(30),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        alignment: Alignment.bottomCenter,
+        margin: const EdgeInsets.all(30),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(Icons.call),
+              icon: const Icon(Icons.call, size: 50,),
               onPressed: _hasCallSupport
                   ? () => setState(() {
                 //_launched = _sendTextMsgs(_phoneNumber);
@@ -76,7 +80,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             IconButton(onPressed: () {
               _sendSMS("hehe", recipents);
             },
-              icon: Icon(Icons.message)
+              icon: const Icon(Icons.message, size: 50,)
             )],
         ),
       ),
