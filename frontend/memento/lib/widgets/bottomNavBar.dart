@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:memento/views/parent/mapScreen.dart';
 import 'package:memento/views/patient/chatBot.dart';
+import 'package:memento/widgets/customDrawer.dart';
 
 import '../views/parent/homeParent.dart';
 import '../views/parent/profileParent.dart';
@@ -30,7 +31,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _parentList = [
     const HomeParent(),
     const MapScreen(),
-    const HomeParent(),
+    const ChatBot(),
     const ProfileParent(),
   ];
 

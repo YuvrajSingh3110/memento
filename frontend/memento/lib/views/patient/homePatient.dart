@@ -1,10 +1,12 @@
 import 'package:memento/views/patient/eventEditing.dart';
 import 'package:flutter/material.dart';
+import 'package:memento/views/patient/generateQRCode.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../model/eventDataSource.dart';
 import '../../services/provider/provider.dart';
+import '../../widgets/customDrawer.dart';
 import '../../widgets/taskWidget.dart';
 
 class HomePatient extends StatefulWidget {
@@ -19,6 +21,18 @@ class _HomeScreenState extends State<HomePatient> {
   Widget build(BuildContext context) {
     final events = Provider.of<EventProvider>(context).events;
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: IconButton(
+                icon: Icon(Icons.document_scanner_outlined),
+                onPressed: () => QRGenerationScreen(),
+              )
+          )
+        ],
+      ),
+      drawer: CustomDrawer(),
       body: Container(
         child: SfCalendar(
           view: CalendarView.month,
