@@ -379,7 +379,12 @@ class _SignupState extends State<Signup> {
   postDetailsToFirestore(String name, String email, String mobile, String password, String role) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
-    CollectionReference ref = firebaseFirestore.collection('users');
+    CollectionReference ref;
+    if(role == 'Parent'){
+      ref = firebaseFirestore.collection('parent');
+    }else{
+      ref = firebaseFirestore.collection('patient');
+    }
     ref.doc(user!.uid).set({'name': name, 'email': email, 'mobile': mobile, 'password': password, 'role': role});
     await LocalDb.saveName(name);
     await LocalDb.saveEmail(email);
