@@ -56,72 +56,161 @@ class _ProfileScreenState extends State<ProfilePatient> {
   }
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: null,
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Align(
-          alignment: Alignment.topCenter,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const CircleAvatar(
-                radius: 60,
-                backgroundImage: AssetImage('assets/profile.png'),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                userName ?? "Loading...",
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              Column(
+              SizedBox(height: height * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  // user info
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
-                        LineAwesomeIcons.envelope,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 5),
                       Text(
-                        userEmail ?? "Loading..",
+                        userName ?? "Loading...",
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(width: width * 0.01),
+                              Text(
+                                userEmail ?? "Loading..",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 5,
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                width: 5,
+                                height: 10,
+                              ),
+                              Text(
+                                phoneNumber ?? "No phone number",
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(width: width*0.02,),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors
+                                      .grey[200], // Light gray background color
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Circular border radius
+                                ),
+                                child: Text(
+                                  "Patient",
+                                  style: TextStyle(
+                                    // Define the style for the text if needed
+                                  ),
+                                ),
+                              )
+                            ],
+
+                          ),
+                          const SizedBox(
+                            width: 5,
+                            height: 10,
+                          ),
+
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors
+                                      .grey[200], // Light gray background color
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Circular border radius
+                                ),
+                                child: Row(
+                                  children: [
+                                    Image.asset("assets/icons/cake.png"),
+                                    Text(
+                                      "78",
+                                      style: TextStyle(
+                                        // Define the style for the text if needed
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 5, height: 10,),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors
+                                      .grey[200], // Light gray background color
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Circular border radius
+                                ),
+                                child:
+
+                                Row(
+                                  children: [
+                                    Image.asset("assets/icons/gender.png"),
+                                    Text(
+                                      "Male",
+                                      style: TextStyle(
+                                        // Define the style for the text if needed
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        LineAwesomeIcons.phone,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        phoneNumber ?? "No phone number",
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ],
+
+                  // avart image
+                  const CircleAvatar(
+                    radius: 60,
+                    backgroundImage: AssetImage('assets/profile.png'),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                    width: width * 0.05,
                   ),
                 ],
               ),
+              // profile image
 
-
-
+              // text content //edit profile button
               const SizedBox(height: 24),
+
+              // edit button
               SizedBox(
-                width: 200,
-                height: 60,
+                width: width * 0.45,
+                height: height * 0.06,
                 child: ElevatedButton(
                   onPressed: () => Navigator.push(
                     context,
@@ -148,20 +237,122 @@ class _ProfileScreenState extends State<ProfilePatient> {
                       ),
                     ),
                   ),
-                  child: const Text(
-                    "Edit Profile",
-                    style: TextStyle(fontSize: 18),
+
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          return Colors.white; // Transparent background color
+                        }),
+                    side: MaterialStateProperty.all(
+                        BorderSide(color: Colors.black)), // Black border
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.edit, color: Colors.black), // Edit icon
+                      SizedBox(width: 8), // Spacer between icon and text
+                      Text(
+                        "Edit Profile",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
+                    ],
                   ),
                 ),
               ),
+
+              SizedBox(height: height * 0.02),
+
+              // accessiblity features
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300], // Light gray background color
+                  borderRadius:
+                  BorderRadius.circular(12), // Circular border radius
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child:
+                          Image.asset("assets/icons/language.png")
+                        ),
+                        SizedBox(height: height * 0.01),
+                        Text("Change"),
+                        Text("Language")
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child:          
+                          Image.asset("assets/icons/fontsize.png")
+
+                        ),
+                        SizedBox(height: height * 0.01),
+                        Text("Change "),
+                        Text("Font Size"),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.04,
+                              vertical: height * 0.02),
+                          decoration: BoxDecoration(
+                            color: Colors.black, // Light gray background color
+                            borderRadius: BorderRadius.circular(
+                                50), // Circular border radius
+                          ),
+                          child:
+                          Image.asset("assets/icons/voice.png")
+                        ),
+                        SizedBox(height: height * 0.01),
+                        Text("Use"),
+                        Text("Voice"),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
               // Add more Text widgets for other user details if needed
-              const SizedBox(height: 24),
               const SizedBox(height: 10),
-              MenuItemWidget(title: "settings", icon: LineAwesomeIcons.cog, onPress: () {}),
-              MenuItemWidget(title: "Notifications", icon: LineAwesomeIcons.bell, onPress: () {}),
-              const Divider(color: Colors.grey,),
+              MenuItemWidget(
+                  title: "settings",
+                  icon: LineAwesomeIcons.cog,
+                  onPress: () {}),
+              MenuItemWidget(
+                  title: "Notifications",
+                  icon: LineAwesomeIcons.bell,
+                  onPress: () {}),
+              const Divider(
+                color: Colors.grey,
+              ),
               const SizedBox(height: 10),
-              MenuItemWidget(title: "Information", icon: LineAwesomeIcons.info, onPress: () {}),
+              MenuItemWidget(
+                  title: "Information",
+                  icon: LineAwesomeIcons.info,
+                  onPress: () {}),
               MenuItemWidget(
                 title: "Logout",
                 textColor: Colors.red,
@@ -172,8 +363,6 @@ class _ProfileScreenState extends State<ProfilePatient> {
             ],
           ),
         ),
-
-      ),
     );
   }
 }
