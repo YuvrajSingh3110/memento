@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:memento/services/linkUsers.dart';
 import 'package:memento/views/patient/eventEditing.dart';
 import 'package:memento/widgets/eventCard.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,7 @@ class _HomeParentState extends State<HomeParent> {
       if (!mounted) return;
       setState(() {
         qrResult = qrCode;
+        addUserIdTousersList(qrResult, "XJ2iXZZyN9Qj0LEFQoND81jUixz1");
       });
     } on PlatformException {
       qrResult = "Failed to get platform version";
