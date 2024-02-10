@@ -387,7 +387,7 @@ class _SignupState extends State<Signup> {
     }else{
       ref = firebaseFirestore.collection('patient');
     }
-    ref.doc(user!.uid).set({'name': name, 'email': email, 'mobile': mobile, 'password': password, 'role': role, 'event': []});
+    ref.doc(user!.uid).set({'name': name, 'email': email, 'mobile': mobile, 'password': password, 'role': role,'patients':[]});
     UserRole userRole = _convertStringToUserRole(role);
     RoleProvider roleProvider = Provider.of<RoleProvider>(context, listen: false);
     roleProvider.updateUserRole(userRole);

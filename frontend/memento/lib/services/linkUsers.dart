@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 void addUserIdTousersList(String patientUserId, String currentUserId) async {
 
   // Access the users collection
-  CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
+  CollectionReference usersCollection = FirebaseFirestore.instance.collection('parent');
   print("Adding $patientUserId to $currentUserId's patients list");
 
   await usersCollection.doc(currentUserId).update({
@@ -14,7 +14,7 @@ void addUserIdTousersList(String patientUserId, String currentUserId) async {
 
 // fetch all the patients of a parent
 Future<List<String>> fetchPatients(String currentUserId) async {
-  CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
+  CollectionReference usersCollection = FirebaseFirestore.instance.collection('parent');
   DocumentSnapshot user = await usersCollection.doc(currentUserId).get();
   List<String> patients = List.from(user.get('patients'));
   return patients;
@@ -40,4 +40,11 @@ Future<GeoPoint> pollingForFetchPatientLatLng(String patientUserId) async {
       await Future.delayed(Duration(seconds: 1));
     }
   }
+}
+
+//fetch patients LatLng from the database
+Future<DocumentSnapshot> fetchPatientDetails(String patientUserId) async {
+  CollectionReference patientCollection = FirebaseFirestore.instance.collection('patient');
+  DocumentSnapshot patient = await patientCollection.doc(patientUserId).get();
+  return patient;
 }

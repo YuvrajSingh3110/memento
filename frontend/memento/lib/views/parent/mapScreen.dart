@@ -113,7 +113,7 @@ class _MapScreenParentState extends State<MapScreenParent> {
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
-          target: patientLatLng[0],
+          target: patientLatLng.length==0?LatLng(31.3310016, 75.5734925):patientLatLng[0],
           zoom: 14,
         ),
         polylines: {
