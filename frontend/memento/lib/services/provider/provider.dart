@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class EventProvider extends ChangeNotifier {
   final user = FirebaseAuth.instance;
-  final List<Event> _events = [];
+  List<Event> _events = [];
   List<Event> get events => _events;
 
   DateTime _selectedDate = DateTime.now();
@@ -88,5 +88,34 @@ class EventProvider extends ChangeNotifier {
 
     await eventsCollection.doc(user.currentUser!.uid).collection("event").doc(eventId).update(eventMap);
     print("updated event in firebase");
+  }
+
+  Future<void> fetchEvents() async {
+    String? role = await LocalDb.getRole();
+    role = role?.toLowerCase();
+    try {
+      final QuerySnapshot eventSnapshot = await FirebaseFirestore.instance.collection(role!).doc(user.currentUser!.uid).collection("event").get();
+      List<String> eventIDs = eventSnapshot.docs.map((doc) => doc).cast<String>().toList();
+      final List<Event> fetchedEvents = await _fetchEventsDetails(eventIDs);
+      print("fetchedEvents $fetchedEvents");
+      _events = fetchedEvents;
+      //_events = eventSnapshot.docs.map((doc) => Event.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
+      notifyListeners();
+    } catch (error) {
+      // Handle error
+      print('Error fetching events: $error');
+    }
+  }
+
+  Future<List<Event>> _fetchEventsDetails(List<String> eventIDs) async {
+    String? role = await LocalDb.getRole();
+    role = role?.toLowerCase();
+    // Fetch event details from the 'events' collection based on event IDs
+    final List<Future<Event>> futures = eventIDs.map((eventID) async {
+      final DocumentSnapshot eventSnapshot = await FirebaseFirestore.instance.collection(role!).doc(user.currentUser!.uid).collection("event").doc(eventID).get();
+      return Event.fromMap(eventSnapshot.data() as Map<String, dynamic>, eventSnapshot.id);
+    }).toList();
+
+    return Future.wait(futures);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memento/model/event.dart';
 import 'package:memento/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -209,7 +210,7 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
           title: _titleController.text,
           from: fromDate,
           to: toDate,
-          isAllDay: false);
+          isAllDay: false, position: GeoPoint(31.3254611,75.5173362));
 
       final isEditing = widget.event != null;
       final provider = Provider.of<EventProvider>(context, listen: false);
