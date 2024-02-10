@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileParent> {
 
     if (user != null) {
       // Use the user's UID to fetch additional data from Firestore
-      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore.instance.collection('parent').doc(user.uid).get();
 
       setState(() {
         userName = userData['name'];
@@ -313,7 +313,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (user != null) {
       try {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        await FirebaseFirestore.instance.collection('parent').doc(user.uid).update({
           'name': nameController.text,
           'phone': phoneController.text,
         });
