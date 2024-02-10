@@ -4,6 +4,7 @@ import 'package:memento/services/localDb/localDb.dart';
 import 'package:memento/services/provider/provider.dart';
 import 'package:memento/services/provider/roleProvider.dart';
 import 'package:memento/services/provider/userprovider.dart';
+import 'package:memento/theme/styles.dart';
 import 'package:memento/views/auth/login.dart';
 import 'package:memento/widgets/bottomNavBar.dart';
 import 'package:provider/provider.dart';
@@ -71,9 +72,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp(
               title: 'Memento',
               debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                useMaterial3: true,
-              ),
+              theme: Styles.themeData(BuildContext),
               home: isLogin ? BottomNavBar(role: role) : const Login(),
             );
           },
