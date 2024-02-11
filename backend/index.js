@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const {Vonage} = require('@vonage/server-sdk');
-const { SMS } = require('@vonage/messages');
 
 const app = express();
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:memento/model/event.dart';
 import 'package:memento/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +14,21 @@ class EventEditingScreen extends StatefulWidget {
   @override
   State<EventEditingScreen> createState() => _EventEditingScreenState();
 }
+Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
 class _EventEditingScreenState extends State<EventEditingScreen> {
   final _formKey = GlobalKey<FormState>();
   late DateTime fromDate;
   late DateTime toDate;
 
+  final mapsApiKey = "AIzaSyBAC_OF_lWBfFr_Zjs-mO0Kwyr4f_faiMU";
+  late GoogleMapController mapController;
+
   final TextEditingController _titleController = TextEditingController();
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
   @override
   void initState() {
@@ -36,6 +45,7 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
     }
   }
 
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -45,28 +55,58 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
+    Future _addMarkerLongPressed(LatLng latlang) async {
+    setState(() {
+        final MarkerId markerId = MarkerId("RANDOM_ID");
+        Marker marker = Marker(
+            markerId: markerId,
+            draggable: true,
+            position: latlang, //With this parameter you automatically obtain latitude and longitude
+            infoWindow: InfoWindow(
+                title: "Marker here",
+                snippet: 'This looks good',
+            ),
+            icon: BitmapDescriptor.defaultMarker,
+        );
+        print(latlang);
+        markers[markerId] = marker;
+    });
+
+}
+
+
+
     return Scaffold(
       appBar: AppBar(
         leading: CloseButton(),
         actions: buildEditingActions(),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(8),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              buildTitle(),
-              SizedBox(
-                height: 10,
+      body: Column(
+        children: [
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  buildTitle(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    child: buildDateTimePicker(),
+                  )
+                ],
               ),
-              SizedBox(
-                child: buildDateTimePicker(),
-              )
-            ],
-          ),
-        ),
+            ),
+          Container(
+            height: height*0.5,
+            child: GoogleMap(onMapCreated: _onMapCreated,initialCameraPosition: CameraPosition(target: LatLng(23.2067737,72.5796236),zoom: 14),myLocationEnabled: true,onLongPress: (argument) => {_addMarkerLongPressed(argument)},markers: Set<Marker>.of(markers.values)),
+          )
+        ],
       ),
     );
   }

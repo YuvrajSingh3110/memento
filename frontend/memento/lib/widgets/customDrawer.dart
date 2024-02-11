@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_sms_android/flutter_sms.dart';
+import 'package:memento/services/api.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -15,6 +16,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Future<void>? _launched;
   final String msgContent = 'Emergency! Please help!';
   List<String> recipents = ["+917986459449"];
+
 
   @override
   void initState() {
@@ -78,7 +80,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   : null,
             ),
             IconButton(onPressed: () {
-              _sendSMS("hehe", recipents);
+              _sendSMS("testing message", recipents);
             },
               icon: const Icon(Icons.message, size: 50,)
             )],
