@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FeatureBox extends StatelessWidget {
-  const FeatureBox({super.key, required this.color, required this.headerText, required this.descriptionText});
-  final Color color;
+  const FeatureBox({super.key, required this.headerText, required this.descriptionText});
   final String headerText;
   final String descriptionText;
 
@@ -14,7 +13,8 @@ class FeatureBox extends StatelessWidget {
         vertical: 10,
       ),
       decoration: BoxDecoration(
-        color: color,
+        color: Colors.transparent,
+        border: Border.all(color: Colors.black, width: 2),
         borderRadius: const BorderRadius.all(
           Radius.circular(15),
         ),

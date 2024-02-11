@@ -113,17 +113,14 @@ class _ChatBotState extends State<ChatBot> {
               child: const Column(
                 children: [
                   FeatureBox(
-                      color: Colors.greenAccent,
                       headerText: 'ChatGPT',
                       descriptionText:
                           'A smarter way to stay organized and informed with ChatGPT'),
                   FeatureBox(
-                      color: Colors.lightBlueAccent,
                       headerText: 'Dall-E',
                       descriptionText:
                           'Get inspired and stay creative with your personal assistant powered by Dall-E'),
                   FeatureBox(
-                      color: Colors.tealAccent,
                       headerText: 'Smart Voice Assistant',
                       descriptionText:
                           'Get the best of both worlds with a voice assistant powered by Dall-E and ChatGPT')

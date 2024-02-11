@@ -69,15 +69,18 @@ class _HomeParentState extends State<HomeParent> {
           ),
         ],
       ),
-      body: ListView.builder(
+      body: RefreshIndicator(
+        onRefresh: () => getPatientsDetails(),
+        child: ListView.builder(
 
-          shrinkWrap: true,
-          itemCount: patientDetails.length,
-          itemBuilder: (context, index) {
-            return PatientCard(
-              patientName: patientDetails[index]["name"],
-            );
-          },
+            shrinkWrap: true,
+            itemCount: patientDetails.length,
+            itemBuilder: (context, index) {
+              return PatientCard(
+                patientName: patientDetails[index]["name"],
+              );
+            },
+        ),
       )
     );
   }

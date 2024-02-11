@@ -283,7 +283,7 @@ class _ProfileScreenState extends State<ProfileParent> {
                                 50), // Circular border radius
                           ),
                           child: const Icon(
-                            LineAwesomeIcons.language,
+                            LineAwesomeIcons.font,
                             color: Colors.white,
                             size: 36,
                           ),
@@ -305,7 +305,7 @@ class _ProfileScreenState extends State<ProfileParent> {
                                 50), // Circular border radius
                           ),
                           child: const Icon(
-                            LineAwesomeIcons.language,
+                            LineAwesomeIcons.microphone,
                             color: Colors.white,
                             size: 36,
                           ),
