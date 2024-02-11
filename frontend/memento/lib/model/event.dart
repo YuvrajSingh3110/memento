@@ -7,7 +7,7 @@ class Event {
   final String? desc;
   final DateTime from;
   final DateTime to;
-  final GeoPoint position = const GeoPoint(23.209915077246425, 72.58477158844471);
+  final GeoPoint position = const GeoPoint(23.204930, 72.584301);
   final Color bgColor;
   final bool isAllDay;
 

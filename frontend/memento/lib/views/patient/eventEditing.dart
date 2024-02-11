@@ -85,28 +85,34 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
         leading: CloseButton(),
         actions: buildEditingActions(),
       ),
-      body: Column(
-        children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  buildTitle(),
-                  SizedBox(
-                    height: 10,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      buildTitle(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        child: buildDateTimePicker(),
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    child: buildDateTimePicker(),
-                  )
-                ],
-              ),
-            ),
-          Container(
-            height: height*0.5,
-            child: GoogleMap(onMapCreated: _onMapCreated,initialCameraPosition: CameraPosition(target: LatLng(23.2067737,72.5796236),zoom: 14),myLocationEnabled: true,onLongPress: (argument) => {_addMarkerLongPressed(argument)},markers: Set<Marker>.of(markers.values)),
-          )
-        ],
+                ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                height: height*0.5,
+                child: GoogleMap(onMapCreated: _onMapCreated,initialCameraPosition: CameraPosition(target: LatLng(23.2067737,72.5796236),zoom: 14),myLocationEnabled: true,onLongPress: (argument) => {_addMarkerLongPressed(argument)},markers: Set<Marker>.of(markers.values)),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

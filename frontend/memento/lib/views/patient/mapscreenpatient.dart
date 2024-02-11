@@ -37,6 +37,7 @@ class _MapScreenPatientState extends State<MapScreenPatient> {
   //final LatLng _center = const LatLng(45.521563, -122.677433);
   // final LatLng sourceLocation = const LatLng(31.3254611, 75.5173362);
   LatLng destLocation = const LatLng(31.3310016, 75.5734925);
+  LatLng currentLocation = const LatLng(23.207326, 72.582606);
 
   // void _getCurrentLocation() async {
   //   Location location = Location();
@@ -56,24 +57,12 @@ class _MapScreenPatientState extends State<MapScreenPatient> {
     mapController = controller;
   }
 
-  // Future<void> _getCurrentLocation() async {
-  //   var location = Location();
-  //   try {
-  //     LocationData currentLocation = await location.getLocation();
-  //     setState(() {
-  //       _currentLocation = currentLocation;
-  //       print(_currentLocation);
-  //     });
-  //   } catch (e) {
-  //     print('Error getting location: $e');
-  //   }
-  // }
 
   void getPolyPoints() async {
     PolylinePoints polyLinePoints = PolylinePoints();
     PolylineResult result = await polyLinePoints.getRouteBetweenCoordinates(
       mapsApiKey,
-      PointLatLng(patientLatLng[0] as double, patientLatLng[1] as double),
+      PointLatLng(currentLocation.latitude, currentLocation.longitude),
       PointLatLng(destLocation.latitude, destLocation.longitude),
     );
     if (result.points.isNotEmpty) {
@@ -81,18 +70,6 @@ class _MapScreenPatientState extends State<MapScreenPatient> {
           polyLineCoordinates.add(LatLng(point.latitude, point.longitude)));
       setState(() {});
     }
-  }
-
-  void getListofPatientsLatLng()async{
-    await fetchPatients(user_id!).then((patients) async {
-      for (var patient in patients) {
-        await pollingForFetchPatientLatLng(patient).then((patientData) {
-          patientLatLng.add(LatLng(patientData.latitude, patientData.longitude));
-          print(patientLatLng);
-          setState(() {});
-        });
-      }
-    });
   }
 
   // Future<void> getEventRoutes(LatLng position) async{
@@ -115,8 +92,7 @@ class _MapScreenPatientState extends State<MapScreenPatient> {
   @override
   void initState() {
     destLocation = widget.position;
-    //getEventRoutes(position);
-    getListofPatientsLatLng();
+    //getEventRoutes(position)
     super.initState();
   }
 
@@ -138,7 +114,7 @@ class _MapScreenPatientState extends State<MapScreenPatient> {
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: const CameraPosition(
-          target: LatLng(31.3310016, 75.5734925),
+          target: LatLng(23.204930, 72.584301),
           zoom: 14,
         ),
         polylines: {
@@ -154,6 +130,10 @@ class _MapScreenPatientState extends State<MapScreenPatient> {
               markerId: MarkerId(latLng.toString()),
               position: latLng,
             ),
+          Marker(
+            markerId: MarkerId("destination"),
+            position: destLocation
+          )
         },
         myLocationEnabled: true,
       ),

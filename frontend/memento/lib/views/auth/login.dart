@@ -27,13 +27,17 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xfff5f5f5),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset("assets/signup.png"),
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.70,
+              //height: MediaQuery.of(context).size.height * 0.70,
               child: Center(
                 child: Container(
                   margin: const EdgeInsets.all(12),
@@ -52,6 +56,14 @@ class _LoginState extends State<Login> {
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                             fontSize: 40,
+                          ),
+                        ),
+                        const Text(
+                          "Please enter your details",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 20,
                           ),
                         ),
                         const SizedBox(
@@ -152,7 +164,7 @@ class _LoginState extends State<Login> {
                             MaterialButton(
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(25.0))),
+                                      BorderRadius.all(Radius.circular(50.0))),
                               height: 50,
                               onPressed: () {
                                 setState(() {
@@ -161,6 +173,7 @@ class _LoginState extends State<Login> {
                                 login(
                                     emailController.text, passwordController.text);
                               },
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               color: Colors.black,
                               child: const Text(
                                 "Login",
@@ -173,11 +186,11 @@ class _LoginState extends State<Login> {
                             MaterialButton(
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(20.0),
+                                  Radius.circular(50.0),
                                 ),
                               ),
-                              elevation: 5.0,
                               height: 40,
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               onPressed: () {
                                 Navigator.pushReplacement(
                                   context,

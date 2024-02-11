@@ -1,8 +1,8 @@
 import 'dart:io';
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,11 +26,12 @@ class _SignupState extends State<Signup> {
   final _auth = FirebaseAuth.instance;
 
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmpassController =
-      TextEditingController();
+  final TextEditingController confirmpassController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
+  int selectedGenderIndex = 1;
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
@@ -171,8 +172,7 @@ class _SignupState extends State<Signup> {
                             if (value!.isEmpty) {
                               return "Phone Number cannot be empty";
                             }
-                            if (!RegExp(
-                                r'^(?:[+0]9)?[0-9]{10}$')
+                            if (!RegExp(r'^(?:[+0]9)?[0-9]{10}$')
                                 .hasMatch(value)) {
                               return ("Please enter a valid email");
                             } else {
@@ -274,6 +274,56 @@ class _SignupState extends State<Signup> {
                         const SizedBox(
                           height: 20,
                         ),
+                        TextFormField(
+                          controller: ageController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Age',
+                            enabled: true,
+                            contentPadding: const EdgeInsets.only(
+                                left: 14.0, bottom: 8.0, top: 8.0),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Age cannot be empty";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {},
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CupertinoSegmentedControl<int>(
+                          children: const {
+                            0: Text(' Male ', style: TextStyle(fontSize: 24),),
+                            1: Text(' Female ', style: TextStyle(fontSize: 24),),
+                            2: Text(' Others ', style: TextStyle(fontSize: 24),),
+                          },
+                          groupValue: selectedGenderIndex,
+                          onValueChanged: (int value) {
+                            setState(() {
+                              selectedGenderIndex = value;
+                            });
+                          },
+                          borderColor: Colors.black,
+                          selectedColor: Colors.black,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,15 +375,20 @@ class _SignupState extends State<Signup> {
                             MaterialButton(
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0))),
+                                      BorderRadius.all(Radius.circular(50.0))),
                               height: 40,
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               textColor: Colors.white,
                               onPressed: () {
                                 setState(() {
                                   showProgress = true;
                                 });
-                                signUp(nameController.text, emailController.text, mobileNumberController.text,
-                                    passwordController.text, role);
+                                signUp(
+                                    nameController.text,
+                                    emailController.text,
+                                    mobileNumberController.text,
+                                    passwordController.text,
+                                    role);
                               },
                               color: Colors.black,
                               child: const Text(
@@ -345,8 +400,9 @@ class _SignupState extends State<Signup> {
                             ),
                             MaterialButton(
                               shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(25.0),)),
+                                  borderRadius: BorderRadius.all(
+                                Radius.circular(50.0),
+                              )),
                               height: 50,
                               hoverColor: Colors.black,
                               onPressed: () {
@@ -358,6 +414,7 @@ class _SignupState extends State<Signup> {
                                   ),
                                 );
                               },
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               color: Colors.white,
                               child: const Text(
                                 "Login",
@@ -380,40 +437,52 @@ class _SignupState extends State<Signup> {
     );
   }
 
-  void signUp(String name, String email, String mobileNumber, String password, String role) async {
+  void signUp(String name, String email, String mobileNumber, String password,
+      String role) async {
     const CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore(name, email, mobileNumber, password, role)})
+          .then((value) => {
+                postDetailsToFirestore(
+                    name, email, mobileNumber, password, role)
+              })
           .catchError((e) {});
     }
   }
 
-  postDetailsToFirestore(String name, String email, String mobile, String password, String role) async {
+  postDetailsToFirestore(String name, String email, String mobile,
+      String password, String role) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref;
-    if(role == 'Parent'){
+    if (role == 'Parent') {
       ref = firebaseFirestore.collection('parent');
-    }else{
+    } else {
       ref = firebaseFirestore.collection('patient');
     }
-    ref.doc(user!.uid).set({'name': name, 'email': email, 'mobile': mobile, 'password': password, 'role': role,});
-    if(role == "parent"){
+    ref.doc(user!.uid).set({
+      'name': name,
+      'email': email,
+      'mobile': mobile,
+      'password': password,
+      'role': role,
+    });
+    if (role == "parent") {
       ref.doc(user.uid).set({'patients': []});
-    }else{
+    } else {
       ref.doc(user.uid).set({'events': [], 'location': GeoPoint});
     }
     UserRole userRole = _convertStringToUserRole(role);
-    RoleProvider roleProvider = Provider.of<RoleProvider>(context, listen: false);
+    RoleProvider roleProvider =
+        Provider.of<RoleProvider>(context, listen: false);
     roleProvider.updateUserRole(userRole);
     await LocalDb.saveName(name);
     await LocalDb.saveEmail(email);
     await LocalDb.saveMobile(mobile);
     await LocalDb.saveRole(role);
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => BottomNavBar(role: role)));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => BottomNavBar(role: role)));
   }
 
   UserRole _convertStringToUserRole(String role) {
@@ -423,7 +492,7 @@ class _SignupState extends State<Signup> {
       case 'patient':
         return UserRole.Patient;
       default:
-      // Handle unknown role or throw an error
+        // Handle unknown role or throw an error
         throw Exception('Unknown role: $role');
     }
   }

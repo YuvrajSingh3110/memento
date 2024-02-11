@@ -49,22 +49,40 @@ class _ShowEventsState extends State<ShowEvents> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                event.title,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    width: 80,
+                                    child: Text(
+                                      event.title,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    formattedDateTime,
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                formattedDateTime,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                ),
-                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("Home"),
+                                  Icon(Icons.arrow_right_alt_rounded),
+                                  Text("Park"),
+                                ],
+                              )
                             ],
                           ),
 
